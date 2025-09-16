@@ -26,12 +26,11 @@ import { SignJWT } from "jose";
  */
 export const generateJWTToken = async (
   time: string,
-  userId?: string // UUID kullan, sayısal ID değil
+  userId?: string
 ) => {
   try {
     const payload: Record<string, string | number> = {};
     
-    // Sadece gerekli minimal bilgileri ekle
     if (userId) {
       payload.sub = userId; // Standard JWT claim
     }
@@ -40,8 +39,8 @@ export const generateJWTToken = async (
       .setProtectedHeader({ alg: "HS256" })
       .setIssuedAt()
       .setExpirationTime(time)
-      .setIssuer("digital-wallet") // Kim oluşturdu
-      .setAudience("digital-wallet-users") // Kim için
+      .setIssuer("digital-wallet")
+      .setAudience("digital-wallet-users")
       .sign(new TextEncoder().encode(process.env.JWT_SECRET_KEY));
 
     return jwt;
